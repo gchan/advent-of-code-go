@@ -1,37 +1,39 @@
 package main
 
 import (
-  "strconv"
-  "strings"
-  "sort"
-  "os"
-  "bufio"
+	"bufio"
+	"os"
+	"sort"
+	"strconv"
+	"strings"
 )
 
 func main() {
-  file, err := os.Open("./day-02-input.txt")
-  if err != nil { panic(err) }
-  defer file.Close()
+	file, err := os.Open("./day-02-input.txt")
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
 
-  scanner := bufio.NewScanner(file)
-  total := 0
+	scanner := bufio.NewScanner(file)
+	total := 0
 
-  for scanner.Scan() {
-    present := scanner.Text()
-    sides   := []int{}
+	for scanner.Scan() {
+		present := scanner.Text()
+		sides := []int{}
 
-    for _, side_string := range strings.Split(present, "x") {
-      side, _ := strconv.Atoi(side_string)
-      sides = append(sides, side)
-    }
+		for _, side_string := range strings.Split(present, "x") {
+			side, _ := strconv.Atoi(side_string)
+			sides = append(sides, side)
+		}
 
-    sort.Ints(sides)
+		sort.Ints(sides)
 
-    // Wrap
-    total += (sides[0] + sides[1]) * 2
-    // Bow
-    total += sides[0] * sides[1] * sides[2]
-  }
+		// Wrap
+		total += (sides[0] + sides[1]) * 2
+		// Bow
+		total += sides[0] * sides[1] * sides[2]
+	}
 
-  println(total)
+	println(total)
 }

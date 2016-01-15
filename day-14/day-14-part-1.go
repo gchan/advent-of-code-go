@@ -1,53 +1,55 @@
 package main
 
 import (
-  "io/ioutil"
-  "strings"
-  "regexp"
-  "strconv"
+	"io/ioutil"
+	"regexp"
+	"strconv"
+	"strings"
 )
 
 type Reindeer struct {
-  speed, duration, rest, distance int
+	speed, duration, rest, distance int
 }
 
 func (r *Reindeer) race(seconds int) {
-  for seconds > 0 {
-    if seconds < r.duration {
-      r.distance += r.speed * seconds
-    } else {
-      r.distance += r.speed * r.duration
-    }
-    seconds -= r.duration
-    seconds -= r.rest
-  }
+	for seconds > 0 {
+		if seconds < r.duration {
+			r.distance += r.speed * seconds
+		} else {
+			r.distance += r.speed * r.duration
+		}
+		seconds -= r.duration
+		seconds -= r.rest
+	}
 }
 
 func main() {
-  input, err := ioutil.ReadFile("./day-14-input.txt")
-  if err != nil { panic(err) }
+	input, err := ioutil.ReadFile("./day-14-input.txt")
+	if err != nil {
+		panic(err)
+	}
 
-  descriptions := strings.Split(string(input), "\n")
+	descriptions := strings.Split(string(input), "\n")
 
-  regex := regexp.MustCompile("(\\d+) km/s.* (\\d+) seconds.* (\\d+)")
+	regex := regexp.MustCompile("(\\d+) km/s.* (\\d+) seconds.* (\\d+)")
 
-  seconds := 2503
-  maximum_distance := -1
+	seconds := 2503
+	maximum_distance := -1
 
-  for _, description := range descriptions {
-    matches  := regex.FindStringSubmatch(description)[1:]
+	for _, description := range descriptions {
+		matches := regex.FindStringSubmatch(description)[1:]
 
-    speed, _    := strconv.Atoi(matches[0])
-    duration, _ := strconv.Atoi(matches[1])
-    rest, _     := strconv.Atoi(matches[2])
+		speed, _ := strconv.Atoi(matches[0])
+		duration, _ := strconv.Atoi(matches[1])
+		rest, _ := strconv.Atoi(matches[2])
 
-    reindeer := Reindeer{speed: speed, duration: duration, rest: rest}
-    reindeer.race(seconds)
+		reindeer := Reindeer{speed: speed, duration: duration, rest: rest}
+		reindeer.race(seconds)
 
-    if reindeer.distance > maximum_distance {
-      maximum_distance = reindeer.distance
-    }
-  }
+		if reindeer.distance > maximum_distance {
+			maximum_distance = reindeer.distance
+		}
+	}
 
-  println(maximum_distance)
+	println(maximum_distance)
 }

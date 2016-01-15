@@ -1,20 +1,22 @@
 package main
 
 import (
-  "io/ioutil"
-  "strings"
+	"io/ioutil"
+	"strings"
 )
 
 func main() {
-  input, err := ioutil.ReadFile("./day-01-input.txt")
-  if err != nil { panic(err) }
+	input, err := ioutil.ReadFile("./day-01-input.txt")
+	if err != nil {
+		panic(err)
+	}
 
-  string   := string(input)
+	string := string(input)
 
-  up   := strings.Count(string, "(")
-  down := strings.Count(string, ")")
+	up := strings.Count(string, "(")
+	down := strings.Count(string, ")")
 
-  floor := up - down
+	floor := up - down
 
-  println(floor)
+	println(floor)
 }
