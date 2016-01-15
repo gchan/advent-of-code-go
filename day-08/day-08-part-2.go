@@ -15,16 +15,16 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 
-	code_characters := 0
-	encoded_characters := 0
+	codeCharacters := 0
+	encodedCharacters := 0
 
 	for scanner.Scan() {
 		line := scanner.Text()
 
-		code_characters += len(line)
+		codeCharacters += len(line)
 		escaped := strconv.Quote(line)
-		encoded_characters += len(escaped)
+		encodedCharacters += len(escaped)
 	}
 
-	println(encoded_characters - code_characters)
+	println(encodedCharacters - codeCharacters)
 }

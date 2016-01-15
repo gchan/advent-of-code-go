@@ -45,35 +45,35 @@ func main() {
 	registers := make(map[string]int)
 	registers["a"] = 1
 
-	next_instruction := 0
-	instruction := instructions[next_instruction]
+	nextInstruction := 0
+	instruction := instructions[nextInstruction]
 
-	for next_instruction < len(instructions) {
-		instruction = instructions[next_instruction]
+	for nextInstruction < len(instructions) {
+		instruction = instructions[nextInstruction]
 
 		switch instruction.name {
 		case "hlf":
 			registers[instruction.register] /= 2
-			next_instruction += 1
+			nextInstruction++
 		case "tpl":
 			registers[instruction.register] *= 3
-			next_instruction += 1
+			nextInstruction++
 		case "inc":
-			registers[instruction.register] += 1
-			next_instruction += 1
+			registers[instruction.register]++
+			nextInstruction++
 		case "jmp":
-			next_instruction += instruction.offset
+			nextInstruction += instruction.offset
 		case "jie":
 			if registers[instruction.register]%2 == 0 {
-				next_instruction += instruction.offset
+				nextInstruction += instruction.offset
 			} else {
-				next_instruction += 1
+				nextInstruction++
 			}
 		case "jio":
 			if registers[instruction.register] == 1 {
-				next_instruction += instruction.offset
+				nextInstruction += instruction.offset
 			} else {
-				next_instruction += 1
+				nextInstruction++
 			}
 		}
 	}

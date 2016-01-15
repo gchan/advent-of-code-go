@@ -18,7 +18,7 @@ func main() {
 	digest := ""
 
 	for !regex.MatchString(digest) {
-		number += 1
+		number++
 
 		data := []byte(input)
 		data = append(data, fmt.Sprintf("%d", number)...)

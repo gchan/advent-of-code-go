@@ -8,21 +8,21 @@ import (
 )
 
 type Reindeer struct {
-	speed, duration, rest, distance   int
-	points, resting_time, flying_time int
+	speed, duration, rest, distance int
+	points, restingTime, flyingTime int
 }
 
 func (r *Reindeer) tick() {
-	if r.resting_time > 0 {
-		r.resting_time--
+	if r.restingTime > 0 {
+		r.restingTime--
 	} else {
-		r.flying_time++
+		r.flyingTime++
 		r.distance += r.speed
 	}
 
-	if r.flying_time == r.duration {
-		r.flying_time = 0
-		r.resting_time = r.rest
+	if r.flyingTime == r.duration {
+		r.flyingTime = 0
+		r.restingTime = r.rest
 	}
 }
 
@@ -63,27 +63,27 @@ func main() {
 	}
 
 	for s := 0; s < seconds; s++ {
-		maximum_distance := 0
+		maximumDistance := 0
 		for _, reindeer := range reindeers {
 			reindeer.tick()
-			if reindeer.distance > maximum_distance {
-				maximum_distance = reindeer.distance
+			if reindeer.distance > maximumDistance {
+				maximumDistance = reindeer.distance
 			}
 		}
 
 		for _, reindeer := range reindeers {
-			if reindeer.distance == maximum_distance {
+			if reindeer.distance == maximumDistance {
 				reindeer.points++
 			}
 		}
 	}
 
-	maximum_points := -1
+	maximumPoints := -1
 	for _, reindeer := range reindeers {
-		if reindeer.points > maximum_points {
-			maximum_points = reindeer.points
+		if reindeer.points > maximumPoints {
+			maximumPoints = reindeer.points
 		}
 	}
 
-	println(maximum_points)
+	println(maximumPoints)
 }

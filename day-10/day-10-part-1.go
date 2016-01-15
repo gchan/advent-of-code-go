@@ -12,7 +12,7 @@ func main() {
 	}
 
 	for i := 0; i < 40; i++ {
-		new_numbers := make([]byte, 0)
+		var newNumbers []byte
 
 		for j := 0; j < len(numbers); j++ {
 			num := numbers[j]
@@ -25,11 +25,11 @@ func main() {
 
 			length := end - start + 1
 
-			new_numbers = append(new_numbers, strconv.Itoa(length)[0])
-			new_numbers = append(new_numbers, numbers[j])
+			newNumbers = append(newNumbers, strconv.Itoa(length)[0])
+			newNumbers = append(newNumbers, numbers[j])
 		}
 
-		numbers = new_numbers
+		numbers = newNumbers
 	}
 
 	println(len(numbers))

@@ -25,16 +25,16 @@ func (boss *Boss) dead() bool {
 }
 
 type Wizard struct {
-	hp, mana, armor                            int
-	shield_timer, poison_timer, recharge_timer int
-	spent_mana                                 int
+	hp, mana, armor                         int
+	shieldTimer, poisonTimer, rechargeTimer int
+	spentMana                               int
 }
 
 func (wizard *Wizard) damaged(damage int) {
 	if damage-wizard.armor > 0 {
 		wizard.hp -= damage - wizard.armor
 	} else {
-		wizard.hp -= 1
+		wizard.hp--
 	}
 }
 
@@ -43,7 +43,7 @@ func (wizard *Wizard) dead() bool {
 }
 
 func (wizard *Wizard) cast(spell *Spell, boss *Boss) {
-	wizard.spent_mana += spell.cost
+	wizard.spentMana += spell.cost
 	wizard.mana -= spell.cost
 
 	switch spell.name {
@@ -54,46 +54,46 @@ func (wizard *Wizard) cast(spell *Spell, boss *Boss) {
 		wizard.hp += 2
 	case "shield":
 		wizard.armor = 7
-		wizard.shield_timer = 6
+		wizard.shieldTimer = 6
 	case "poison":
-		wizard.poison_timer = 6
+		wizard.poisonTimer = 6
 	case "recharge":
-		wizard.recharge_timer = 5
+		wizard.rechargeTimer = 5
 	}
 }
 
-func (wizard *Wizard) can_cast(spell *Spell) bool {
+func (wizard *Wizard) canCast(spell *Spell) bool {
 	if spell.cost > wizard.mana {
 		return false
 	}
 
 	switch spell.name {
 	case "shield":
-		return wizard.shield_timer == 0
+		return wizard.shieldTimer == 0
 	case "poison":
-		return wizard.poison_timer == 0
+		return wizard.poisonTimer == 0
 	case "recharge":
-		return wizard.recharge_timer == 0
+		return wizard.rechargeTimer == 0
 	default:
 		return true
 	}
 }
 
 func (wizard *Wizard) tick(boss *Boss) {
-	if wizard.shield_timer > 0 {
-		wizard.shield_timer -= 1
+	if wizard.shieldTimer > 0 {
+		wizard.shieldTimer--
 	} else {
 		wizard.armor = 0
 	}
 
-	if wizard.poison_timer > 0 {
+	if wizard.poisonTimer > 0 {
 		boss.damaged(3)
-		wizard.poison_timer -= 1
+		wizard.poisonTimer--
 	}
 
-	if wizard.recharge_timer > 0 {
+	if wizard.rechargeTimer > 0 {
 		wizard.mana += 101
-		wizard.recharge_timer -= 1
+		wizard.rechargeTimer--
 	}
 }
 
@@ -103,11 +103,11 @@ func main() {
 		panic(err)
 	}
 
-	number_regexp := regexp.MustCompile("\\d+")
+	numberRegexp := regexp.MustCompile("\\d+")
 
-	numbers := number_regexp.FindAllStringSubmatch(string(input), -1)
-	boss_hp, _ := strconv.Atoi(numbers[0][0])
-	boss_damage, _ := strconv.Atoi(numbers[1][0])
+	numbers := numberRegexp.FindAllStringSubmatch(string(input), -1)
+	bossHp, _ := strconv.Atoi(numbers[0][0])
+	bossDamage, _ := strconv.Atoi(numbers[1][0])
 
 	spells := []Spell{
 		Spell{name: "missile", cost: 53},
@@ -117,20 +117,20 @@ func main() {
 		Spell{name: "recharge", cost: 229},
 	}
 
-	min_mana := 9000
+	minMana := 9000
 
 	// A translation of my Ruby solution
 	// This could *definitely* be improved
 
-	for i := 0; i < 10000; i++ {
-		boss := &Boss{hp: boss_hp, damage: boss_damage}
+	for i := 0; i < 200000; i++ {
+		boss := &Boss{hp: bossHp, damage: bossDamage}
 		wizard := &Wizard{hp: 50, mana: 500}
 
 		for !wizard.dead() {
 			wizard.tick(boss)
 
 			spell := &spells[rand.Intn(len(spells))]
-			for !wizard.can_cast(spell) {
+			for !wizard.canCast(spell) {
 				spell = &spells[rand.Intn(len(spells))]
 			}
 
@@ -138,9 +138,9 @@ func main() {
 			wizard.tick(boss)
 
 			if boss.dead() {
-				if wizard.spent_mana <= min_mana {
-					min_mana = wizard.spent_mana
-					println(min_mana)
+				if wizard.spentMana <= minMana {
+					minMana = wizard.spentMana
+					println(minMana)
 				}
 				break
 			}

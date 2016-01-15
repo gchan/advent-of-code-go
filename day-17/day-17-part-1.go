@@ -22,7 +22,7 @@ func main() {
 		containers = append(containers, size)
 	}
 
-	test_combo := func(combo []int) {
+	testCombo := func(combo []int) {
 		sum := 0
 		for _, container := range combo {
 			sum += container
@@ -35,20 +35,20 @@ func main() {
 	for num := 1; num <= len(containers); num++ {
 		combo := make([]int, num)
 
-		var next_combo func(int, int)
+		var nextCombo func(int, int)
 		last := len(combo) - 1
-		next_combo = func(i, from int) {
+		nextCombo = func(i, from int) {
 			for j := from; j < len(containers); j++ {
 				combo[i] = containers[j]
 				if i == last {
-					test_combo(combo)
+					testCombo(combo)
 				} else {
-					next_combo(i+1, j+1)
+					nextCombo(i+1, j+1)
 				}
 			}
 		}
 
-		next_combo(0, 0)
+		nextCombo(0, 0)
 	}
 
 	println(combinations)

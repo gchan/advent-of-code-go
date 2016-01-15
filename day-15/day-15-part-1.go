@@ -34,7 +34,7 @@ func main() {
 		ingredients = append(ingredients, ingredient)
 	}
 
-	best_score := 0
+	bestScore := 0
 
 	for a := 0; a <= 100; a++ {
 		for b := 0; b <= 100-a; b++ {
@@ -68,12 +68,12 @@ func main() {
 
 				score := capacity * durability * flavor * texture
 
-				if score > best_score {
-					best_score = score
+				if score > bestScore {
+					bestScore = score
 				}
 			}
 		}
 	}
 
-	println(best_score)
+	println(bestScore)
 }

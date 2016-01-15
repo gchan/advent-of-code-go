@@ -19,24 +19,24 @@ func main() {
 
 	var grid [1000][1000]bool
 
-	from_regex := regexp.MustCompile("\\d+,\\d+")
-	to_regex := regexp.MustCompile("\\d+,\\d+$")
+	fromRegex := regexp.MustCompile("\\d+,\\d+")
+	toRegex := regexp.MustCompile("\\d+,\\d+$")
 
 	for scanner.Scan() {
 		instruction := scanner.Text()
 
-		from_str := from_regex.FindString(instruction)
-		to_str := to_regex.FindString(instruction)
-		from := strings.Split(from_str, ",")
-		to := strings.Split(to_str, ",")
+		fromStr := fromRegex.FindString(instruction)
+		toStr := toRegex.FindString(instruction)
+		from := strings.Split(fromStr, ",")
+		to := strings.Split(toStr, ",")
 
-		from_x, _ := strconv.Atoi(from[0])
-		from_y, _ := strconv.Atoi(from[1])
-		to_x, _ := strconv.Atoi(to[0])
-		to_y, _ := strconv.Atoi(to[1])
+		fromX, _ := strconv.Atoi(from[0])
+		fromY, _ := strconv.Atoi(from[1])
+		toX, _ := strconv.Atoi(to[0])
+		toY, _ := strconv.Atoi(to[1])
 
-		for x := from_x; x <= to_x; x++ {
-			for y := from_y; y <= to_y; y++ {
+		for x := fromX; x <= toX; x++ {
+			for y := fromY; y <= toY; y++ {
 				if strings.Contains(instruction, "off") {
 					grid[x][y] = false
 				} else if strings.Contains(instruction, "on") {

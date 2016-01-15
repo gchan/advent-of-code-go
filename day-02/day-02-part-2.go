@@ -22,8 +22,8 @@ func main() {
 		present := scanner.Text()
 		sides := []int{}
 
-		for _, side_string := range strings.Split(present, "x") {
-			side, _ := strconv.Atoi(side_string)
+		for _, sideString := range strings.Split(present, "x") {
+			side, _ := strconv.Atoi(sideString)
 			sides = append(sides, side)
 		}
 

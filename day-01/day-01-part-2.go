@@ -16,9 +16,9 @@ func main() {
 
 	for index, char := range string {
 		if string(char) == string("(") {
-			floor += 1
+			floor++
 		} else {
-			floor -= 1
+			floor--
 		}
 
 		if floor < 0 {

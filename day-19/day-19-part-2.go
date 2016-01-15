@@ -19,25 +19,25 @@ func main() {
 
 	replacements := make(map[string]string)
 
-	element_regex := regexp.MustCompile("\\A\\w*")
-	new_element_regex := regexp.MustCompile("\\w*\\z")
+	elementRegex := regexp.MustCompile("\\A\\w*")
+	newElementRegex := regexp.MustCompile("\\w*\\z")
 
 	for _, replacement := range lines {
-		element := element_regex.FindString(replacement)
-		new_element := new_element_regex.FindString(replacement)
+		element := elementRegex.FindString(replacement)
+		newElement := newElementRegex.FindString(replacement)
 
-		replacements[new_element] = element
+		replacements[newElement] = element
 	}
 
-	molecule_dup := make([]byte, len(molecule))
-	electron_regex := regexp.MustCompile("e+")
+	moleculeDup := make([]byte, len(molecule))
+	electronRegex := regexp.MustCompile("e+")
 	steps := 0
 
-	for !electron_regex.Match(molecule_dup) {
+	for !electronRegex.Match(moleculeDup) {
 		steps = 0
 		exhausted := false
-		molecule_dup = make([]byte, len(molecule))
-		copy(molecule_dup, molecule)
+		moleculeDup = make([]byte, len(molecule))
+		copy(moleculeDup, molecule)
 
 		for !exhausted {
 			exhausted = true
@@ -53,9 +53,9 @@ func main() {
 			list := rand.Perm(len(replacements))
 			for _, index := range list {
 				element := keys[index]
-				new_element := replacements[element]
-				if strings.Contains(string(molecule_dup), element) {
-					molecule_dup = []byte(strings.Replace(string(molecule_dup), element, new_element, 1))
+				newElement := replacements[element]
+				if strings.Contains(string(moleculeDup), element) {
+					moleculeDup = []byte(strings.Replace(string(moleculeDup), element, newElement, 1))
 					steps++
 					exhausted = false
 					break

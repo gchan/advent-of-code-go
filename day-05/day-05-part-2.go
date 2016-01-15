@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func repeating_letter_with_gap(str string) bool {
+func repeatingLetterWithGap(str string) bool {
 	for i := 0; i < len(str)-2; i++ {
 		if str[i] == str[i+2] {
 			return true
@@ -16,7 +16,7 @@ func repeating_letter_with_gap(str string) bool {
 	return false
 }
 
-func two_pairs(str string) bool {
+func twoPairs(str string) bool {
 	for i := 0; i < len(str)-2; i++ {
 		if strings.Count(str, str[i:i+2]) >= 2 {
 			return true
@@ -38,7 +38,7 @@ func main() {
 
 	for scanner.Scan() {
 		str := scanner.Text()
-		if repeating_letter_with_gap(str) && two_pairs(str) {
+		if repeatingLetterWithGap(str) && twoPairs(str) {
 			count++
 		}
 	}

@@ -14,14 +14,14 @@ func main() {
 
 	lines := strings.Split(string(input), "\n")
 
-	code_characters := 0
-	memory_characters := 0
+	codeCharacters := 0
+	memoryCharacters := 0
 
 	for _, line := range lines {
-		code_characters += len(line)
+		codeCharacters += len(line)
 		unescaped, _ := strconv.Unquote(line)
-		memory_characters += len(unescaped)
+		memoryCharacters += len(unescaped)
 	}
 
-	println(code_characters - memory_characters)
+	println(codeCharacters - memoryCharacters)
 }

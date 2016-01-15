@@ -5,12 +5,12 @@ import (
 	"strings"
 )
 
-func valid_password(password string) bool {
-	return increasing_straight(password) && two_pairs(password) &&
-		excludes_confusing_characters(password)
+func validPassword(password string) bool {
+	return increasingStraight(password) && twoPairs(password) &&
+		excludesConfusingCharacters(password)
 }
 
-func increasing_straight(password string) bool {
+func increasingStraight(password string) bool {
 	for i := 0; i < len(password)-2; i++ {
 		if password[i]+1 == password[i+1] &&
 			password[i]+2 == password[i+2] {
@@ -21,7 +21,7 @@ func increasing_straight(password string) bool {
 	return false
 }
 
-func two_pairs(password string) bool {
+func twoPairs(password string) bool {
 	pairs := 0
 	for i := 0; i < len(password)-1; i++ {
 		if password[i] == password[i+1] {
@@ -33,23 +33,23 @@ func two_pairs(password string) bool {
 	return pairs >= 2
 }
 
-func excludes_confusing_characters(password string) bool {
+func excludesConfusingCharacters(password string) bool {
 	return !strings.ContainsAny(password, "iol")
 }
 
-func increment_password(password *string) {
-	new_password := []byte(*password)
+func incrementPassword(password *string) {
+	newPassword := []byte(*password)
 
-	for i := len(new_password) - 1; i >= 0; i-- {
-		if new_password[i] != 'z' {
-			new_password[i] += 1
+	for i := len(newPassword) - 1; i >= 0; i-- {
+		if newPassword[i] != 'z' {
+			newPassword[i]++
 			break
 		} else {
-			new_password[i] = 'a'
+			newPassword[i] = 'a'
 		}
 	}
 
-	*password = string(new_password)
+	*password = string(newPassword)
 }
 
 func main() {
@@ -60,13 +60,13 @@ func main() {
 
 	password := string(input)
 
-	next_password := 2
+	nextPassword := 2
 
-	for next_password != 0 {
-		increment_password(&password)
+	for nextPassword != 0 {
+		incrementPassword(&password)
 
-		if valid_password(password) {
-			next_password--
+		if validPassword(password) {
+			nextPassword--
 		}
 	}
 

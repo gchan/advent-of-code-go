@@ -8,42 +8,42 @@ import (
 )
 
 type Circuit struct {
-	output_wire string
-	input_wires []string
-	values      []int
-	gate        string
+	outputWire string
+	inputWires []string
+	values     []int
+	gate       string
 }
 
 func NewCircuit(instruction string) *Circuit {
-	gate_regexp := regexp.MustCompile("[A-Z]+")
-	output_regexp := regexp.MustCompile("-> (.+)")
-	input_regexp := regexp.MustCompile("([a-z0-9]+) ")
-	wire_regexp := regexp.MustCompile("[a-z]+")
+	gateRegexp := regexp.MustCompile("[A-Z]+")
+	outputRegexp := regexp.MustCompile("-> (.+)")
+	inputRegexp := regexp.MustCompile("([a-z0-9]+) ")
+	wireRegexp := regexp.MustCompile("[a-z]+")
 
-	gate := gate_regexp.FindString(instruction)
-	output_wire := output_regexp.FindStringSubmatch(instruction)[1]
-	inputs := input_regexp.FindAllStringSubmatch(instruction, -1)
+	gate := gateRegexp.FindString(instruction)
+	outputWire := outputRegexp.FindStringSubmatch(instruction)[1]
+	inputs := inputRegexp.FindAllStringSubmatch(instruction, -1)
 
-	var input_wires []string
+	var inputWires []string
 	var values []int
 
 	for _, input := range inputs {
 		input := input[1]
-		if wire_regexp.MatchString(input) {
-			input_wires = append(input_wires, input)
+		if wireRegexp.MatchString(input) {
+			inputWires = append(inputWires, input)
 		} else {
 			value, _ := strconv.Atoi(input)
 			values = append(values, value)
 		}
 	}
 
-	return &Circuit{output_wire, input_wires, values, gate}
+	return &Circuit{outputWire, inputWires, values, gate}
 }
 
 func (circuit *Circuit) simplify(wire string, value int) {
-	for i, input_wire := range circuit.input_wires {
-		if input_wire == wire {
-			circuit.input_wires = append(circuit.input_wires[:i], circuit.input_wires[i+1:]...)
+	for i, inputWire := range circuit.inputWires {
+		if inputWire == wire {
+			circuit.inputWires = append(circuit.inputWires[:i], circuit.inputWires[i+1:]...)
 			circuit.values = append([]int{value}, circuit.values...)
 			return
 		}
@@ -69,8 +69,8 @@ func (circuit *Circuit) output() int {
 	}
 }
 
-func (circuit *Circuit) has_output() bool {
-	return len(circuit.input_wires) == 0
+func (circuit *Circuit) hasOutput() bool {
+	return len(circuit.inputWires) == 0
 }
 
 func main() {
@@ -84,17 +84,17 @@ func main() {
 	// Circuits organised by input wires
 	circuits := make(map[string][]*Circuit)
 	outputs := make(map[string]int)
-	target_wire := "a"
+	targetWire := "a"
 
 	for _, instruction := range instructions {
 		circuit := NewCircuit(instruction)
 
-		for _, input := range circuit.input_wires {
+		for _, input := range circuit.inputWires {
 			circuits[input] = append(circuits[input], circuit)
 		}
 
-		if circuit.has_output() {
-			outputs[circuit.output_wire] = circuit.output()
+		if circuit.hasOutput() {
+			outputs[circuit.outputWire] = circuit.output()
 		}
 	}
 
@@ -103,25 +103,25 @@ func main() {
 	for {
 		evaluated := make(map[string]int)
 
-		for wire, wire_value := range outputs {
+		for wire, wireValue := range outputs {
 			for _, circuit := range circuits[wire] {
-				circuit.simplify(wire, wire_value)
+				circuit.simplify(wire, wireValue)
 
-				if circuit.has_output() {
-					evaluated[circuit.output_wire] = circuit.output()
+				if circuit.hasOutput() {
+					evaluated[circuit.outputWire] = circuit.output()
 				}
 			}
 
 			delete(outputs, wire)
 		}
 
-		for wire, wire_value := range evaluated {
-			outputs[wire] = wire_value
+		for wire, wireValue := range evaluated {
+			outputs[wire] = wireValue
 		}
 
-		final_output, present := outputs[target_wire]
+		finalOutput, present := outputs[targetWire]
 		if present {
-			println(final_output)
+			println(finalOutput)
 			return
 		}
 	}

@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func neighbours_on(grid [][]bool, x, y int) int {
+func neighboursOn(grid [][]bool, x, y int) int {
 	sum := 0
 
 	for i := x - 1; i <= x+1 && i < 100; i++ {
@@ -19,7 +19,7 @@ func neighbours_on(grid [][]bool, x, y int) int {
 	return sum
 }
 
-func make_grid() [][]bool {
+func makeGrid() [][]bool {
 	grid := make([][]bool, 100)
 	for i := 0; i < 100; i++ {
 		grid[i] = make([]bool, 100)
@@ -33,7 +33,7 @@ func main() {
 		panic(err)
 	}
 
-	grid := make_grid()
+	grid := makeGrid()
 	rows := strings.Split(string(input), "\n")
 
 	for y, row := range rows {
@@ -43,25 +43,25 @@ func main() {
 	}
 
 	for i := 0; i < 100; i++ {
-		new_grid := make_grid()
+		newGrid := makeGrid()
 
 		for x := 0; x < 100; x++ {
 			for y := 0; y < 100; y++ {
-				neighbours := neighbours_on(grid, x, y)
+				neighbours := neighboursOn(grid, x, y)
 
 				if grid[x][y] {
-					new_grid[x][y] = neighbours == 2 || neighbours == 3
+					newGrid[x][y] = neighbours == 2 || neighbours == 3
 				} else {
-					new_grid[x][y] = neighbours == 3
+					newGrid[x][y] = neighbours == 3
 				}
 
 				if (x == 0 || x == 99) && (y == 0 || y == 99) {
-					new_grid[x][y] = true
+					newGrid[x][y] = true
 				}
 			}
 		}
 
-		grid = new_grid
+		grid = newGrid
 	}
 
 	sum := 0

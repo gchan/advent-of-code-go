@@ -42,17 +42,17 @@ func main() {
 	}
 
 	for _, sue := range sues {
-		real_sue := true
+		realSue := true
 
 		for compound, amount := range compounds {
 			match := regexes[compound].FindStringSubmatch(sue)
 			if len(match) > 0 && match[1] != amount {
-				real_sue = false
+				realSue = false
 				break
 			}
 		}
 
-		if real_sue {
+		if realSue {
 			println(regexes["number"].FindStringSubmatch(sue)[1])
 			break
 		}

@@ -16,20 +16,20 @@ type Item struct {
 }
 
 func win(hero, boss Person) bool {
-	hero_net_damage := hero.damage - boss.armor
-	boss_net_damage := boss.damage - hero.armor
+	heroNetDamage := hero.damage - boss.armor
+	bossNetDamage := boss.damage - hero.armor
 
-	if hero_net_damage < 1 {
-		hero_net_damage = 1
+	if heroNetDamage < 1 {
+		heroNetDamage = 1
 	}
-	if boss_net_damage < 1 {
-		boss_net_damage = 1
+	if bossNetDamage < 1 {
+		bossNetDamage = 1
 	}
 
-	turns_to_defeat := math.Ceil(float64(boss.hp) / float64(hero_net_damage))
-	turns_to_lose := math.Ceil(float64(hero.hp) / float64(boss_net_damage))
+	turnsToDefeat := math.Ceil(float64(boss.hp) / float64(heroNetDamage))
+	turnsToLose := math.Ceil(float64(hero.hp) / float64(bossNetDamage))
 
-	return turns_to_defeat <= turns_to_lose
+	return turnsToDefeat <= turnsToLose
 }
 
 func main() {
@@ -38,14 +38,14 @@ func main() {
 		panic(err)
 	}
 
-	number_regexp := regexp.MustCompile("\\d+")
+	numberRegexp := regexp.MustCompile("\\d+")
 
-	numbers := number_regexp.FindAllStringSubmatch(string(input), -1)
-	boss_hp, _ := strconv.Atoi(numbers[0][0])
-	boss_damage, _ := strconv.Atoi(numbers[1][0])
-	boss_armor, _ := strconv.Atoi(numbers[2][0])
+	numbers := numberRegexp.FindAllStringSubmatch(string(input), -1)
+	bossHp, _ := strconv.Atoi(numbers[0][0])
+	bossDamage, _ := strconv.Atoi(numbers[1][0])
+	bossArmor, _ := strconv.Atoi(numbers[2][0])
 
-	boss := Person{hp: boss_hp, damage: boss_damage, armor: boss_armor}
+	boss := Person{hp: bossHp, damage: bossDamage, armor: bossArmor}
 
 	weapons := []Item{
 		Item{cost: 8, damage: 4},
@@ -79,29 +79,29 @@ func main() {
 	_ = shields
 	_ = rings
 
-	minimum_cost := 9000
+	minimumCost := 9000
 
 	for _, weapon := range weapons {
 		for _, shield := range shields {
-			for _, ring_one := range rings {
-				for _, ring_two := range rings {
-					if ring_one == ring_two {
+			for _, ringOne := range rings {
+				for _, ringTwo := range rings {
+					if ringOne == ringTwo {
 						continue
 					}
 
-					cost := weapon.cost + shield.cost + ring_one.cost + ring_two.cost
-					damage := weapon.damage + shield.damage + ring_one.damage + ring_two.damage
-					armor := weapon.armor + shield.armor + ring_one.armor + ring_two.armor
+					cost := weapon.cost + shield.cost + ringOne.cost + ringTwo.cost
+					damage := weapon.damage + shield.damage + ringOne.damage + ringTwo.damage
+					armor := weapon.armor + shield.armor + ringOne.armor + ringTwo.armor
 
 					hero := Person{hp: 100, damage: damage, armor: armor}
 
-					if win(hero, boss) && cost < minimum_cost {
-						minimum_cost = cost
+					if win(hero, boss) && cost < minimumCost {
+						minimumCost = cost
 					}
 				}
 			}
 		}
 	}
 
-	println(minimum_cost)
+	println(minimumCost)
 }

@@ -7,20 +7,20 @@ import (
 	"strings"
 )
 
-func matches_reading(compound, sue_value string, compound_value int) bool {
-	value, _ := strconv.Atoi(sue_value)
+func matchesReading(compound, sueValue string, compoundValue int) bool {
+	value, _ := strconv.Atoi(sueValue)
 
 	switch compound {
 	case "cats":
-		return value > compound_value
+		return value > compoundValue
 	case "trees":
-		return value > compound_value
+		return value > compoundValue
 	case "pomeranians":
-		return value < compound_value
+		return value < compoundValue
 	case "goldfish":
-		return value < compound_value
+		return value < compoundValue
 	default:
-		return value == compound_value
+		return value == compoundValue
 	}
 }
 
@@ -60,17 +60,17 @@ func main() {
 	}
 
 	for _, sue := range sues {
-		real_sue := true
+		realSue := true
 
 		for compound, amount := range compounds {
 			match := regexes[compound].FindStringSubmatch(sue)
-			if len(match) > 0 && !matches_reading(compound, match[1], amount) {
-				real_sue = false
+			if len(match) > 0 && !matchesReading(compound, match[1], amount) {
+				realSue = false
 				break
 			}
 		}
 
-		if real_sue {
+		if realSue {
 			println(regexes["number"].FindStringSubmatch(sue)[1])
 			break
 		}

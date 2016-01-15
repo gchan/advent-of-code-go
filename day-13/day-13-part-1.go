@@ -14,22 +14,22 @@ import (
 
 // Heap's Algorithm
 // https://en.wikipedia.org/wiki/Heap%27s_algorithm
-func generate_permutations(n int, strs []string, perms *[][]string) {
+func generatePermutations(n int, strs []string, perms *[][]string) {
 	if n == 1 {
-		strs_copy := make([]string, len(strs))
-		copy(strs_copy, strs)
+		strsCopy := make([]string, len(strs))
+		copy(strsCopy, strs)
 
-		*perms = append(*perms, strs_copy)
+		*perms = append(*perms, strsCopy)
 	} else {
 		for i := 0; i < n-1; i++ {
-			generate_permutations(n-1, strs, perms)
+			generatePermutations(n-1, strs, perms)
 			if n%2 == 0 {
 				swap(strs, i, n-1)
 			} else {
 				swap(strs, 0, n-1)
 			}
 		}
-		generate_permutations(n-1, strs, perms)
+		generatePermutations(n-1, strs, perms)
 	}
 }
 
@@ -44,7 +44,7 @@ func main() {
 	}
 
 	rules := strings.Split(string(input), "\n")
-	happiness_rules := make(map[string]map[string]int)
+	happinessRules := make(map[string]map[string]int)
 
 	regex := regexp.MustCompile("\\A(\\w+) .* (gain|lose) (\\d+) .* to (\\w+)")
 
@@ -54,27 +54,27 @@ func main() {
 		person := matches[0]
 		negative := strings.Contains(matches[1], "lose")
 		happiness, _ := strconv.Atoi(matches[2])
-		next_to := matches[3]
+		nextTo := matches[3]
 
 		if negative {
 			happiness *= -1
 		}
 
-		if _, present := happiness_rules[person]; !present {
-			happiness_rules[person] = make(map[string]int)
+		if _, present := happinessRules[person]; !present {
+			happinessRules[person] = make(map[string]int)
 		}
 
-		happiness_rules[person][next_to] = happiness
+		happinessRules[person][nextTo] = happiness
 	}
 
 	guests := []string{}
-	for guest, _ := range happiness_rules {
+	for guest := range happinessRules {
 		guests = append(guests, guest)
 	}
 
-	max_happiness := math.MinInt32
+	maxHappiness := math.MinInt32
 	perms := [][]string{}
-	generate_permutations(len(guests), guests, &perms)
+	generatePermutations(len(guests), guests, &perms)
 
 	for _, seating := range perms {
 		seating = append(seating, seating[0])
@@ -82,15 +82,15 @@ func main() {
 		sum := 0
 		for i := 0; i < len(seating)-1; i++ {
 			person := seating[i]
-			next_to := seating[i+1]
-			sum += happiness_rules[person][next_to]
-			sum += happiness_rules[next_to][person]
+			nextTo := seating[i+1]
+			sum += happinessRules[person][nextTo]
+			sum += happinessRules[nextTo][person]
 		}
 
-		if sum > max_happiness {
-			max_happiness = sum
+		if sum > maxHappiness {
+			maxHappiness = sum
 		}
 	}
 
-	println(max_happiness)
+	println(maxHappiness)
 }

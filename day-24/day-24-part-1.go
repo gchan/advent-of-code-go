@@ -7,26 +7,26 @@ import (
 	"strings"
 )
 
-func generate_combinations(elements []int, length int) <-chan []int {
+func generateCombinations(elements []int, length int) <-chan []int {
 	c := make(chan []int)
 	combo := make([]int, length)
-	var next_combo func(int, int)
+	var nextCombo func(int, int)
 	last := len(combo) - 1
 
-	next_combo = func(i, from int) {
+	nextCombo = func(i, from int) {
 		for j := from; j < len(elements); j++ {
 			combo[i] = elements[j]
 			if i == last {
 				c <- combo
 			} else {
-				next_combo(i+1, j+1)
+				nextCombo(i+1, j+1)
 			}
 		}
 	}
 
 	go func(c chan []int) {
 		defer close(c)
-		next_combo(0, 0)
+		nextCombo(0, 0)
 	}(c)
 
 	return c
@@ -38,27 +38,27 @@ func main() {
 		panic(err)
 	}
 
-	presents_strs := strings.Split(string(input), "\n")
-	presents := make([]int, len(presents_strs))
+	presentsStrs := strings.Split(string(input), "\n")
+	presents := make([]int, len(presentsStrs))
 
-	for i, present := range presents_strs {
+	for i, present := range presentsStrs {
 		presents[i], _ = strconv.Atoi(present)
 	}
 
 	groups := 3
 
 	sum := 0
-	min_qe := math.MaxInt64
+	minQe := math.MaxInt64
 	for _, present := range presents {
 		sum += present
 	}
 
 	target := sum / groups
-	max_group_size := len(presents) / groups
+	maxGroupSize := len(presents) / groups
 
-	for group_size := 1; group_size < max_group_size+1; group_size++ {
-		min_eq_found := false
-		combos := generate_combinations(presents, group_size)
+	for groupSize := 1; groupSize < maxGroupSize+1; groupSize++ {
+		minEqFound := false
+		combos := generateCombinations(presents, groupSize)
 
 		for combo := range combos {
 			sum := 0
@@ -69,16 +69,16 @@ func main() {
 				qe *= present
 			}
 
-			if sum == target && qe < min_qe {
-				min_qe = qe
-				min_eq_found = true
+			if sum == target && qe < minQe {
+				minQe = qe
+				minEqFound = true
 			}
 		}
 
-		if min_eq_found {
+		if minEqFound {
 			break
 		}
 	}
 
-	println(min_qe)
+	println(minQe)
 }

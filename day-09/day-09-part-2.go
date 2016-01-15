@@ -13,22 +13,22 @@ import (
 
 // Heap's Algorithm
 // https://en.wikipedia.org/wiki/Heap%27s_algorithm
-func generate_permutations(n int, strs []string, perms *[][]string) {
+func generatePermutations(n int, strs []string, perms *[][]string) {
 	if n == 1 {
-		strs_copy := make([]string, len(strs))
-		copy(strs_copy, strs)
+		strsCopy := make([]string, len(strs))
+		copy(strsCopy, strs)
 
-		*perms = append(*perms, strs_copy)
+		*perms = append(*perms, strsCopy)
 	} else {
 		for i := 0; i < n-1; i++ {
-			generate_permutations(n-1, strs, perms)
+			generatePermutations(n-1, strs, perms)
 			if n%2 == 0 {
 				swap(strs, i, n-1)
 			} else {
 				swap(strs, 0, n-1)
 			}
 		}
-		generate_permutations(n-1, strs, perms)
+		generatePermutations(n-1, strs, perms)
 	}
 }
 
@@ -45,15 +45,15 @@ func main() {
 	inputs := strings.Split(string(input), "\n")
 	distances := make(map[string]map[string]int)
 
-	destination_regexp := regexp.MustCompile("[A-Z][A-z]+")
-	length_regexp := regexp.MustCompile("\\d+")
+	destinationRegexp := regexp.MustCompile("[A-Z][A-z]+")
+	lengthRegexp := regexp.MustCompile("\\d+")
 
 	for _, distance := range inputs {
-		desintations := destination_regexp.FindAllStringSubmatch(distance, -1)
+		desintations := destinationRegexp.FindAllStringSubmatch(distance, -1)
 		from := desintations[0][0]
 		to := desintations[1][0]
 
-		length, _ := strconv.Atoi(length_regexp.FindString(distance))
+		length, _ := strconv.Atoi(lengthRegexp.FindString(distance))
 
 		if _, present := distances[from]; !present {
 			distances[from] = make(map[string]int)
@@ -68,13 +68,13 @@ func main() {
 	}
 
 	longest := math.MinInt32
-	locations := make([]string, 0)
-	for location, _ := range distances {
+	var locations []string
+	for location := range distances {
 		locations = append(locations, location)
 	}
 
-	routes := make([][]string, 0)
-	generate_permutations(len(locations), locations, &routes)
+	var routes [][]string
+	generatePermutations(len(locations), locations, &routes)
 
 	for _, route := range routes {
 		total := 0

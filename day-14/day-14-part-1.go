@@ -34,7 +34,7 @@ func main() {
 	regex := regexp.MustCompile("(\\d+) km/s.* (\\d+) seconds.* (\\d+)")
 
 	seconds := 2503
-	maximum_distance := -1
+	maximumDistance := -1
 
 	for _, description := range descriptions {
 		matches := regex.FindStringSubmatch(description)[1:]
@@ -46,10 +46,10 @@ func main() {
 		reindeer := Reindeer{speed: speed, duration: duration, rest: rest}
 		reindeer.race(seconds)
 
-		if reindeer.distance > maximum_distance {
-			maximum_distance = reindeer.distance
+		if reindeer.distance > maximumDistance {
+			maximumDistance = reindeer.distance
 		}
 	}
 
-	println(maximum_distance)
+	println(maximumDistance)
 }
